@@ -6,6 +6,7 @@ echo "Servidor casa"
 echo "0. escuchamos"
 DATA=`nc -l $PORT`
 
+echo "2. COMPROBANDO CABECERA"
 if [ "$DATA" != "DMAM" ]
 then
 	echo "ERROR 1: Cabecera incorrecta"
@@ -13,10 +14,10 @@ then
 	exit 1
 fi
 
-echo "2. CHECK OK - Enviando OK_HEADER"
+echo "3. CHECK OK - Enviando OK_HEADER"
 echo "OK_HEADER" | nc localhost $PORT
 
-echo "5.COMPROBANDO PREFIJO"
+echo "7.COMPROBANDO PREFIJO"
 DATA=`nc -l $PORT`
 
 PREFIX=`echo "$DATA" | cut -d ' ' -f1`
@@ -31,7 +32,7 @@ then
 	exit 2
 fi
 
-echo "6. COMPROBANDO MD5SUM"
+echo "8. COMPROBANDO MD5SUM"
 
 if [ "$MD5SUM" != "$NAME_FILE" ]
 then
@@ -40,17 +41,17 @@ then
 	exit 3
 fi
 
-echo "7. ENVIANDO OK_FILE_NAME"
+echo "9. ENVIANDO OK_FILE_NAME"
 echo "OK_FILE_NAME" | nc localhost $PORT
 
 
-echo "10. RECIBIENDO UN ARCHIVO"
+echo "12. RECIBIENDO UN ARCHIVO"
 DATA=`nc -l $PORT > recibiendodragon.txt`
 
 RECIBIDO=`cat recibiendodragon.txt`
 COMPROBACION=`cat dragon.txt`
 
-echo "11. COMPROBANDO ARCHIVO"
+echo "13. COMPROBANDO ARCHIVO"
 if [ "$RECIBIDO" != "$COMPROBACION" ]
 then
 	echo "ERROR 5: Dragon incoreccto"
@@ -58,23 +59,32 @@ then
 	exit 5
 fi
 
-echo "12. ENVIADO OK_DATA"
+echo "14. ENVIADO OK_DATA"
 echo "OK_DATA" | nc localhost $PORT
 
-echo "14. RECIBIENDO FILE_MD5"
+echo "17. RECIBIENDO FILE_MD5"
 DATA=`nc -l $PORT`
+PREFIJO=`echo "$DATA" | cut -d ' ' -f1`
 MD5SUM=`echo "$DATA" | cut -d ' ' -f2`
 COMPROBACION1=`echo - "$MD5SUM" | cut -d ' ' -f2`
 
-echo "15. COMPROBANDO MD5"
+echo "18. COMRPOBANDO PREFIJO"
+if [ "$PREFIJO" != "FILE_MD5" ]
+then
+	echo "ERROR 7: PREFIJO INCORRECTO"
+	echo "KO_FILE_MD5"
+	exit 7
+fi
+
+echo "19. COMPROBANDO MD5SUM"
 if [ "$MD5SUM" != "$COMPROBACION1" ]
 then
 	echo "ERROR 7: MD5SUM erroneo"
 	echo "KO_FILE_MD5" | nc localhost $PORT
-	exit 7
+	exit 8
 fi
 
-echo "16. ENVIANDO OK_FILE_MD5"
+echo "20. ENVIANDO OK_FILE_MD5"
 echo "OK_FILE_MD5" | nc localhost $PORT
 
 
