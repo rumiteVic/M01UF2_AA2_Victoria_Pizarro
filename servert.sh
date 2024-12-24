@@ -66,7 +66,8 @@ echo "17. RECIBIENDO FILE_MD5"
 DATA=`nc -l $PORT`
 PREFIJO=`echo "$DATA" | cut -d ' ' -f1`
 MD5SUM=`echo "$DATA" | cut -d ' ' -f2`
-COMPROBACION1=`echo - "$MD5SUM" | cut -d ' ' -f2`
+COMPROBACION1=`echo -n "$COMPROBACION" | md5sum`
+COMPROBACION2=`echo "$COMPROBACION1" | cut -d ' ' -f1`
 
 echo "18. COMRPOBANDO PREFIJO"
 if [ "$PREFIJO" != "FILE_MD5" ]
@@ -77,7 +78,7 @@ then
 fi
 
 echo "19. COMPROBANDO MD5SUM"
-if [ "$MD5SUM" != "$COMPROBACION1" ]
+if [ "$MD5SUM" != "$COMPROBACION2" ]
 then
 	echo "ERROR 7: MD5SUM erroneo"
 	echo "KO_FILE_MD5" | nc localhost $PORT
