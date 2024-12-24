@@ -73,7 +73,7 @@ echo "18. COMRPOBANDO PREFIJO"
 if [ "$PREFIJO" != "FILE_MD5" ]
 then
 	echo "ERROR 7: PREFIJO INCORRECTO"
-	echo "KO_FILE_MD5"
+	echo "KO_FILE_MD5" | nc localhost $PORT
 	exit 4
 fi
 
