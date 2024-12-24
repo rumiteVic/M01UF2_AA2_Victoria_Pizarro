@@ -38,7 +38,7 @@ if [ "$MD5SUM" != "$NAME_FILE" ]
 then
 	echo "ERROR 3: md5sum incorrecto"
 	echo "KO_FILE_NAME_MD5" | nc localhost $PORT
-	exit 3
+	exit 2
 fi
 
 echo "9. ENVIANDO OK_FILE_NAME"
@@ -56,7 +56,7 @@ if [ "$RECIBIDO" != "$COMPROBACION" ]
 then
 	echo "ERROR 5: Dragon incoreccto"
 	echo "KO_DATA" | nc localhost $PORT
-	exit 5
+	exit 3
 fi
 
 echo "14. ENVIADO OK_DATA"
@@ -73,7 +73,7 @@ if [ "$PREFIJO" != "FILE_MD5" ]
 then
 	echo "ERROR 7: PREFIJO INCORRECTO"
 	echo "KO_FILE_MD5"
-	exit 7
+	exit 4
 fi
 
 echo "19. COMPROBANDO MD5SUM"
@@ -81,7 +81,7 @@ if [ "$MD5SUM" != "$COMPROBACION1" ]
 then
 	echo "ERROR 7: MD5SUM erroneo"
 	echo "KO_FILE_MD5" | nc localhost $PORT
-	exit 8
+	exit 4
 fi
 
 echo "20. ENVIANDO OK_FILE_MD5"

@@ -28,7 +28,7 @@ DATA=`nc -l $PORT`
 if [ "$DATA" != "OK_FILE_NAME" ]
 then
 	echo "ERROR 4: el md5sum se envio incorrectamente"
-	exit 4
+	exit 2
 fi
 
 echo "11.ENVIANDO UN ARCHIVO"
@@ -42,7 +42,7 @@ DATA=`nc -l $PORT`
 if [ "$DATA" != "OK_DATA" ]
 then
 	echo "ERROR 6: el dragon es incorrecto"
-	exit 6
+	exit 3
 fi
 
 echo "16. ENVIANDO FILE_NAME_MD5"
@@ -54,6 +54,6 @@ DATA=`nc -l $PORT`
 if [ "$DATA" != "OK_FILE_MD5" ]
 then
 	echo "ERROR 8: No md5"
-	exit 9
+	exit 4
 fi
 
